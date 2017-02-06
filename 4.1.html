@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>KRSPRO</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<style type="text/css">
+	
+	html, body {
+	    margin: 0;
+	    padding: 0;
+	    border: 0;
+	    height: 100%;
+	}
+
+	#framesiam, #sidebar{
+		position: absolute;
+		border:none;
+		box-sizing: border-box;
+	}
+
+	#framesiam{
+		height: 100vh;
+		width: 80%;
+		left: 20%;
+		top: 0;
+		bottom: 0;
+		right: 0;
+	}
+
+
+	#sidebar{
+		height: 100vh;
+		width: 20%;
+		top:0;
+		left: 0;
+		bottom: 0;
+		padding-top: 10px;
+	}
+
+	#matkul, #kodematkul{
+		width: 70%;
+		height: 20px;
+		text-align: center;
+		margin-top: 30px;
+	}
+
+	#kls{
+		width: 35%;
+		height: 20px;
+		text-align: center;
+		margin-top: 30px;
+	}
+
+	select{
+		text-align: center;
+		margin-top: 30px;
+		width: 35%;
+		height: 26px;
+	}
+
+	#tambah{
+		width: 70%;
+		height: 30px;
+		text-align: center;
+		margin-top: 30px;
+		background-color: #159;
+		border: none;
+		color: white;	
+	}
+
+	#list{
+		height: 40vh;
+		width: 70%;
+		margin:auto;
+		margin-top: 30px;
+		overflow: auto;
+		text-align: justify;
+	}
+
+	#list a{
+		text-decoration: none;
+		color: #424242;
+	}
+
+	#run{
+		margin-top: 30px;
+		background-color: #f90;
+		color: white;
+		width: 70%;
+		height: 30px;
+		border: none;
+	}
+
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+
+		var DATE = new Date();
+    	var YEAR = DATE.getFullYear();
+    	var MONTH = DATE.getMonth();
+    	var SMT = 1;
+    	var FAK = "17";
+    	var JUR = "03";
+    	var PRG = "173";
+    	var JEN = "01";
+    	var SEL = 1;
+    	var INS = 1;
+    	var TYPE = 1;
+
+    	if (MONTH < 6) {
+    		SMT = 2;
+    	}
+
+
+		var HIDE = false;
+ 		$("#menu").click(function(){
+			if (HIDE == true) {
+				$("#sidebar").animate({
+	        		width: '20%'
+	        	});
+
+	        	$("#framesiam").animate({
+	        		width: '80%',
+	        		left: '20%'
+	        	});	
+	        		$("#formkrspro").show();
+	        	HIDE = false;
+			}else{
+				$("#sidebar").animate({
+	        		width: '3%'
+	        	});
+
+	        	$("#framesiam").animate({
+	        		width: '97%',
+	        		left: '3%'
+	        	});			
+
+	        	$("#formkrspro").hide();
+	        	HIDE = true;	
+			}
+						
+    	});
+
+    	var krs = [];
+		var div = document.getElementById('list');
+
+		$('#tambah').click(function (){
+
+			var kls = document.getElementById('kls').value;
+			var kodematkul = document.getElementById("kodematkul").value;
+			var hari = document.getElementById("hari").value;
+			var matkul = document.getElementById("matkul").value;			
+
+			var link = "<a target='frame' href='https://siam.ub.ac.id/addcourse.php?mk=" + kodematkul + "&tmk=" + YEAR + "&fak=" + FAK + "&jur=" + JUR + "&prg=" + PRG + "&jen=" + JEN + "&sel=" + SEL + "&thn=" + YEAR + "&smt=" + SMT + "&klas=" + kls + "&ins=" + INS + "&type=" + TYPE + "&day=" + hari + "&kmk_find=" + kodematkul + "'>" + matkul + "-" + kls + "</a><br>";
+
+			krs.push("https://siam.ub.ac.id/addcourse.php?mk=" + kodematkul + "&tmk=" + YEAR + "&fak=" + FAK + "&jur=" + JUR + "&prg=" + PRG + "&jen=" + JEN + "&sel=" + SEL + "&thn=" + YEAR + "&smt=" + SMT + "&klas=" + kls + "&ins=" + INS + "&type=" + TYPE + "&day=" + hari + "&kmk_find=" + kodematkul);
+
+			div.innerHTML = div.innerHTML + link;
+
+			var $cont = $('#list');
+			$cont[0].scrollTop = $cont[0].scrollHeight;
+
+		});
+
+
+		$('#run').click(function(){
+			for (i = 0; i < krs.length; i++) {
+    			window.open(krs[i],'_blank');
+    		}
+
+    		$.ajax({
+    		url: url, 
+    		cache: false,
+    		success: function(response) {
+        	result = $(response).find("#result");
+        	alert(response); // works as expected (returns all html)
+        	alert(result); // returns [object Object]
+    		}
+		});
+
+		
+	});
+
+	});
+	
+	</script>
+	
+</head>
+
+<body>
+	<div id="sidebar">
+		<center>
+			<a href="#" id="menu"><i class="material-icons">menu</i></a>
+			<div id="formkrspro">
+				<form action="">
+					<input type="text" id="matkul" placeholder="Matakuliah" required="">
+					<input type="text" id="kodematkul" placeholder="Kode Matakuliah" required="">
+					<input id="kls" type="text" placeholder="Kelas" required="">
+					<select id="hari" required="">
+						<option value="false" disabled selected>Hari</option>
+						<option value="1">Senin</option>
+					  	<option value="2">Selasa</option>
+					  	<option value="3">Rabu</option>
+					  	<option value="4">Kamis</option>
+					  	<option value="5">Jumat</option>
+					  	<option value="6">Sabtu</option>
+					  	<option value="7">Minggu</option>
+					</select>
+					<input type="button" id="tambah" value="Tambahkan">
+				</form>	
+				<div id="list"></div>
+				<button id="run"><b>RUN KRSPRO</b></button>
+			</div>
+			
+		</center>
+	</div>
+	<iframe src="https://siam.ub.ac.id" id="framesiam" name="frame"></iframe> 
+</body>
+</html>
